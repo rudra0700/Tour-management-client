@@ -14,6 +14,13 @@ import {
 } from "@/components/ui/popover";
 import { ModeToggle } from "./MoodToggle";
 import { Link } from "react-router";
+import {
+  authApi,
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/auth.api";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hook";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -22,6 +29,17 @@ const navigationLinks = [
 ];
 
 export default function Navbar() {
+  const { data } = useUserInfoQuery(undefined);
+  console.log(data?.data?.email);
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
+    await logout(undefined);
+    dispatch(authApi.util.resetApiState());
+    toast.success("Logged out successfully");
+  };
+
   return (
     <header className="border-b px-4 md:px-6">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
@@ -87,7 +105,7 @@ export default function Navbar() {
                 {navigationLinks.map((link, _index) => (
                   <NavigationMenuItem key={link.label}>
                     <NavigationMenuLink
-                     asChild
+                      asChild
                       className="py-1.5 font-medium text-muted-foreground hover:text-primary"
                       // href={link.href}
                     >
@@ -105,9 +123,15 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button asChild className="text-sm" size="sm">
-            <Link to="/login">Login</Link>
-          </Button>
+          {data?.data?.email ? (
+            <Button onClick={handleLogout} className="text-sm" size="sm">
+              Logout
+            </Button>
+          ) : (
+            <Button asChild className="text-sm" size="sm">
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
