@@ -1,4 +1,5 @@
 import { AddTourTypeModal } from "@/components/AddTourTypeModal";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -24,7 +25,7 @@ const AddTourType = () => {
     console.log(id);
     const toastId = toast.loading("Tour type deleting");
     try {
-      const result = await deleteTourType({id}).unwrap();
+      const result = await deleteTourType({ id }).unwrap();
       if (result.success) {
         toast.success("Tour type deleted successfully", { id: toastId });
       }
@@ -50,9 +51,11 @@ const AddTourType = () => {
             <TableRow>
               <TableCell className="font-medium">{item.name}</TableCell>
               <TableCell className="text-right">
-                <Button onClick={() => handleDelete(item._id)}>
-                  <Trash />
-                </Button>
+                <DeleteConfirmationModal onConfirm={() => handleDelete(item._id)}>
+                  <Button>
+                    <Trash />
+                  </Button>
+                </DeleteConfirmationModal>
               </TableCell>
             </TableRow>
           ))}
