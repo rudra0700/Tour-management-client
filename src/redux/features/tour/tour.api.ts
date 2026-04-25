@@ -2,6 +2,15 @@ import { baseApi } from "@/redux/baseApi";
 
 export const tourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    addTour: builder.mutation({
+      query: (tourData) => ({
+        url: "/tour/create",
+        method: "POST",
+        data: tourData,
+      }),
+      invalidatesTags: ["TOUR"],
+    }),
+
     addTourType: builder.mutation({
       query: (tourTypeName) => ({
         url: "/tourtype/create-tour-type",
@@ -9,10 +18,10 @@ export const tourApi = baseApi.injectEndpoints({
         data: tourTypeName,
       }),
       invalidatesTags: ["TOURTYPE"],
-    }),   
-    
+    }),
+
     deleteTourType: builder.mutation({
-      query: ({id, tourTypeName}) => ({
+      query: ({ id, tourTypeName }) => ({
         url: `/tourtype/tour-types/${id}`,
         method: "DELETE",
         data: tourTypeName,
@@ -31,4 +40,9 @@ export const tourApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useAddTourTypeMutation, useGetTourTypesQuery, useDeleteTourTypeMutation } = tourApi;
+export const {
+  useAddTourTypeMutation,
+  useGetTourTypesQuery,
+  useDeleteTourTypeMutation,
+  useAddTourMutation
+} = tourApi;

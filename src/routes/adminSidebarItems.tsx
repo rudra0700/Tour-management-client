@@ -1,11 +1,6 @@
-// import AddTour from "@/pages/Admin/AddTour";
-// import AddTourType from "@/pages/Admin/AddTourType";
-// import Analytics from "@/pages/Admin/Analytics";
 import { AddTour, AddTourType, Analytics } from "@/lazyComponent";
+import { AddDivision } from "@/pages/Admin/AddDivision";
 import type { ISidebarItems } from "@/types";
-
-
-
 
 export const adminSidebarItems: ISidebarItems[] = [
   {
@@ -30,6 +25,11 @@ export const adminSidebarItems: ISidebarItems[] = [
         title: "Add Tour Type",
         url: "/super-admin/add-tour-type",
         component: AddTourType,
+      },
+      {
+        title: "Add Division",
+        url: "/super-admin/add-division",
+        component: AddDivision,
       },
     ],
   },

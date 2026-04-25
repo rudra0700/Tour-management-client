@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { Input } from "./ui/input";
-import { useAddTourTypeMutation} from "@/redux/features/tour/tour.api";
+import { useAddTourTypeMutation } from "@/redux/features/tour/tour.api";
 import { toast } from "sonner";
 
 export function AddTourTypeModal() {
   const form = useForm();
   const [tourType] = useAddTourTypeMutation();
-  
+
   const addTourType = async (data) => {
     const toastId = toast.loading("Tour type adding....");
     try {
@@ -29,7 +29,6 @@ export function AddTourTypeModal() {
     }
   };
 
- 
   return (
     <Dialog>
       <DialogTrigger className="border-white bg-white text-black p-1 rounded-md">
