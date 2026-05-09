@@ -43,6 +43,12 @@ export interface IResponse<T> {
   StatusCode: number;
   message: string;
   data: T;
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
+  };
 }
 
 export interface ISidebarItems {
@@ -50,8 +56,32 @@ export interface ISidebarItems {
   items: {
     title: string;
     url: string;
-    component: ComponentType
+    component: ComponentType;
   }[];
+}
+
+export interface ITourPackage {
+  _id: string;
+  title: string;
+  slug: string;
+  startDate: string;
+  endDate: string;
+  arrivalLocation: string;
+  departureLocation: string;
+  location: string;
+  description: string;
+  costFrom: number;
+  maxGuest: number;
+  minAge: number;
+  division: string;
+  tourType: string;
+  amenities: string[];
+  included: string[];
+  excluded: string[];
+  tourPlan: string[];
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type TRole = "SUPER_ADMIN" | "ADMIN" | "USER";
