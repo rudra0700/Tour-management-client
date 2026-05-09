@@ -31,20 +31,85 @@ import { toast } from "sonner";
 const AddTour = () => {
   const form = useForm({
     defaultValues: {
-      title: "",
+      title: "Dhaka to Rajshahi Heritage Tour",
+      location: "Dhaka",
+      costFrom: 1200,
+      departureLocation: "Dhaka",
+      arrivalLocation: "Rajshahi",
+      maxGuest: "20",
+      minAge: "18",
       division: "",
       tourType: "",
-      description: "",
+      description:
+        "Discover the historical treasures of Rajshahi, known as the 'Silk City' of Bangladesh. Explore ancient Buddhist ruins at Paharpur, visit the magnificent Puthia Palace complex, and experience the rich cultural heritage of north Bengal. Perfect for history enthusiasts and cultural explorers.",
       startDate: new Date(),
       endDate: new Date(),
-      included: [{ value: "" }],
+      included: [
+        { value: "Accommodation for 2 nights" },
+        { value: "All meals (breakfast, lunch, dinner)" },
+        { value: "Transportation (AC bus)" },
+        { value: "Professional tour guide" },
+        { value: "Entry fees to all historical sites" },
+        { value: "Paharpur monastery visit" },
+      ],
+      excluded: [
+        { value: "Personal expenses" },
+        { value: "Extra activities not mentioned" },
+        { value: "Travel insurance" },
+        { value: "Shopping expenses" },
+        { value: "Photography charges at monuments" },
+      ],
+      amenities: [
+        { value: "Comfortable hotel rooms" },
+        { value: "Free WiFi" },
+        { value: "Air conditioning" },
+        { value: "Local transportation" },
+        { value: "Cultural performance evening" },
+      ],
+      tourPlan: [
+        { value: "Day 1: Arrival in Rajshahi and Puthia Palace complex tour" },
+        { value: "Day 2: Paharpur Buddhist monastery and Mahasthangarh visit" },
+        { value: "Day 3: Rajshahi city tour and silk weaving centers" },
+      ],
     },
   });
-  const { fields, append, remove } = useFieldArray({
+
+  const {
+    fields: includedFields,
+    append: includedAppend,
+    remove: includedRemove,
+  } = useFieldArray({
     control: form.control,
     name: "included",
   });
-  console.log(fields);
+
+  const {
+    fields: excludedFields,
+    append: excludedAppend,
+    remove: excludedRemove,
+  } = useFieldArray({
+    control: form.control,
+    name: "excluded",
+  });
+
+  const {
+    fields: amenitiesFields,
+    append: amenitiesAppend,
+    remove: amenitiesRemove,
+  } = useFieldArray({
+    control: form.control,
+    name: "amenities",
+  });
+
+  const {
+    fields: tourPlanFields,
+    append: tourPlanAppend,
+    remove: tourPlanRemove,
+  } = useFieldArray({
+    control: form.control,
+    name: "tourPlan",
+  });
+
   const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
   const [addTour] = useAddTourMutation();
   const { data: divisionData, isLoading: divisionLoading } =
@@ -91,7 +156,7 @@ const AddTour = () => {
     console.log(tourData);
   };
   return (
-    <div className="">
+    <div className="max-w-4xl w-full mx-auto p-4 border border-gray-500 rounded-lg">
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Input
           {...form.register("title")}
@@ -154,7 +219,55 @@ const AddTour = () => {
             )}
           />
         </div>
-        <div className="flex gap-5 mt-5">
+        <div className="flex gap-6 mt-5">
+          <Input
+            {...form.register("location")}
+            id="location"
+            type="text"
+            placeholder="Location"
+            required
+          />{" "}
+          <Input
+            {...form.register("costFrom")}
+            id="costFrom"
+            type="number"
+            placeholder="Tour cost"
+            required
+          />{" "}
+        </div>
+        <div className="flex gap-6 mt-5">
+          <Input
+            {...form.register("departureLocation")}
+            id="departureLocation"
+            type="text"
+            placeholder="Departure Location"
+            required
+          />{" "}
+          <Input
+            {...form.register("arrivalLocation")}
+            id="arrivalLocation"
+            type="text"
+            placeholder="Arrival Location"
+            required
+          />{" "}
+        </div>
+        <div className="flex gap-6 mt-5">
+          <Input
+            {...form.register("maxGuest")}
+            id="maxGuest"
+            type="number"
+            placeholder="Maximum Guest"
+            required
+          />{" "}
+          <Input
+            {...form.register("minAge")}
+            id="minAge"
+            type="number"
+            placeholder="Minimum Age"
+            required
+          />{" "}
+        </div>
+        <div className="flex gap-6 mt-5">
           <Controller
             control={form.control}
             name="startDate"
@@ -240,25 +353,100 @@ const AddTour = () => {
         <Button className="mt-3" type="submit">
           Add Tour
         </Button>
-        <div className="flex justify-between items-center mt-4">
-          <p>Includes</p>
-          <Button type="button" onClick={() => append({ value: "" })}>
-            <Plus />
-          </Button>
-        </div>
+        {/* Includes fields */}
         <div>
-          {fields.map((field, index) => (
-            <div className="flex mt-3 gap-4">
-              <Input
-                {...form.register(`included.${index}.value`)}
-                key={field.id}
-                type="text"
-                placeholder=""
-                required
-              />
-              <Trash onClick={() => remove(index)} />
-            </div>
-          ))}
+          <div className="flex justify-between items-center mt-4">
+            <p>Includes</p>
+            <Button type="button" onClick={() => includedAppend({ value: "" })}>
+              <Plus />
+            </Button>
+          </div>
+          <div>
+            {includedFields.map((field, index) => (
+              <div className="flex mt-3 gap-4">
+                <Input
+                  {...form.register(`included.${index}.value`)}
+                  key={field.id}
+                  type="text"
+                  placeholder=""
+                  required
+                />
+                <Trash onClick={() => includedRemove(index)} />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Excludes fields */}
+        <div>
+          <div className="flex justify-between items-center mt-4">
+            <p>Excludes</p>
+            <Button type="button" onClick={() => excludedAppend({ value: "" })}>
+              <Plus />
+            </Button>
+          </div>
+          <div>
+            {excludedFields.map((field, index) => (
+              <div className="flex mt-3 gap-4">
+                <Input
+                  {...form.register(`excluded.${index}.value`)}
+                  key={field.id}
+                  type="text"
+                  placeholder=""
+                  required
+                />
+                <Trash onClick={() => excludedRemove(index)} />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Amenities fields */}
+        <div>
+          <div className="flex justify-between items-center mt-4">
+            <p>Amenities</p>
+            <Button
+              type="button"
+              onClick={() => amenitiesAppend({ value: "" })}
+            >
+              <Plus />
+            </Button>
+          </div>
+          <div>
+            {amenitiesFields.map((field, index) => (
+              <div className="flex mt-3 gap-4">
+                <Input
+                  {...form.register(`amenities.${index}.value`)}
+                  key={field.id}
+                  type="text"
+                  placeholder=""
+                  required
+                />
+                <Trash onClick={() => amenitiesRemove(index)} />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Tour plan fields */}
+        <div>
+          <div className="flex justify-between items-center mt-4">
+            <p>Tour Plan</p>
+            <Button type="button" onClick={() => tourPlanAppend({ value: "" })}>
+              <Plus />
+            </Button>
+          </div>
+          <div>
+            {tourPlanFields.map((field, index) => (
+              <div className="flex mt-3 gap-4">
+                <Input
+                  {...form.register(`tourPlan.${index}.value`)}
+                  key={field.id}
+                  type="text"
+                  placeholder=""
+                  required
+                />
+                <Trash onClick={() => tourPlanRemove(index)} />
+              </div>
+            ))}
+          </div>
         </div>
       </form>
     </div>

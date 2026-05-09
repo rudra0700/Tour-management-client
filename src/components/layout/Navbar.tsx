@@ -27,6 +27,7 @@ import { role } from "@/constant/role";
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/tours", label: "Tours", role: "PUBLIC" },
   { href: "/admin", label: "Dashboard", role: role.admin },
   { href: "/super-admin", label: "Dashboard", role: role.superAdmin },
   { href: "/user", label: "Dashboard", role: role.user },
@@ -119,7 +120,7 @@ export default function Navbar() {
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, _index) => (
-                    <>
+                    <div key={_index}>
                       {link.role === "PUBLIC" && (
                         <NavigationMenuItem className="w-full" key={link.label}>
                           <NavigationMenuLink className="py-1.5">
@@ -135,7 +136,7 @@ export default function Navbar() {
                           </NavigationMenuLink>
                         </NavigationMenuItem>
                       )}
-                    </>
+                    </div>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
